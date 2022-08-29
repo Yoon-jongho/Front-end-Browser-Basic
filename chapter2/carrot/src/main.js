@@ -1,5 +1,7 @@
 'use strict';
 
+import PopUp from './popup.js';
+
 const CARROT_SIZE = 80;
 const CARROT_COUNT = 5;
 const BUG_COUNT = 5;
@@ -9,10 +11,6 @@ const fieldRect = field.getBoundingClientRect();
 const gameBtn = document.querySelector('.game_button');
 const gameTimer = document.querySelector('.game_timer');
 const gameScore = document.querySelector('.game_score');
-
-const popUp = document.querySelector('.pop-up');
-const popUpText = document.querySelector('.pop-up_message');
-const popUpRefresh = document.querySelector('.pop-up_refresh');
 
 const carrotSound = new Audio('./sound/carrot_pull.mp3');
 const alertSound = new Audio('./sound/alert.wav');
@@ -24,6 +22,11 @@ let started = false;
 let score = 0;
 let timer = null;
 
+const gameFinishBanner = new PopUp();
+gameFinishBanner.setClickListener(() => {
+  startGame();
+});
+
 field.addEventListener('click', (event) => onFieldClick(event));
 
 gameBtn.addEventListener('click', () => {
@@ -32,11 +35,6 @@ gameBtn.addEventListener('click', () => {
   } else {
     startGame();
   }
-});
-
-popUpRefresh.addEventListener('click', () => {
-  startGame();
-  hidePopUp();
 });
 
 function startGame() {
@@ -52,7 +50,8 @@ function stopGame() {
   started = false;
   stopGameTimer();
   hideGameButton();
-  showPopUpWithText('REPLAY?');
+  gameFinishBanner.showWithText();
+  // showPopUpWithText('REPLAY?');
   playSound(alertSound);
   stopSound(bgSound);
 }
@@ -67,7 +66,8 @@ function finishGame(val) {
   }
   stopGameTimer();
   stopSound(bgSound);
-  showPopUpWithText(val ? 'YOU WON' : 'YOU LOSE');
+  gameFinishBanner.showWithText(val ? 'YOU WON' : 'YOU LOSE');
+  // showPopUpWithText(val ? 'YOU WON' : 'YOU LOSE');
 }
 
 function showStopButton() {
@@ -103,14 +103,10 @@ function stopGameTimer() {
   clearInterval(timer);
 }
 
-function showPopUpWithText(text) {
-  popUpText.innerText = text;
-  popUp.classList.remove('pop-up--hide');
-}
-
-function hidePopUp() {
-  popUp.classList.add('pop-up--hide');
-}
+// function showPopUpWithText(text) {
+//   popUpText.innerText = text;
+//   popUp.classList.remove('pop-up--hide');
+// }
 
 function updateTimerText(time) {
   const minutes = Math.floor(time / 60); // 소수점자리가 나오면 내려주는 INT 로만들어주는 함수
