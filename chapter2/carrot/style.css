@@ -6,6 +6,7 @@
 
 .body {
   text-align: center;
+  background-color: black;
 }
 
 .game {
@@ -47,19 +48,23 @@
   margin-top: 8px;
   border-radius: 20px;
   visibility: hidden;
+  user-select: none;
+  cursor: none;
 }
 
 .game_score {
   text-align: center;
   width: 50px;
   height: 50px;
-  font-size: 46px;
+  font-size: 38px;
   background-color: darksalmon;
   border-radius: 50%;
   margin-top: 8px;
   border: 3px solid black;
   color: white;
   visibility: hidden;
+  user-select: none;
+  cursor: none;
 }
 
 .game_field {
@@ -99,4 +104,14 @@
 .pop-up_message {
   display: block;
   font-size: 30px;
+}
+
+.carrot,
+.bug {
+  transition: transform 200ms ease-in;
+}
+
+.carrot:hover,
+.bug:hover {
+  transform: scale(1.1);
 }
